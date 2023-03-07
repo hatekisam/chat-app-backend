@@ -8,7 +8,7 @@ const socket = require("socket.io");
 require("dotenv").config();
 
 app.use(cors());
-app.use(express.json({limit:"50mb"}));
+app.use(express.json({ limit: "50mb" }));
 
 mongoose
   .connect(process.env.MONGO_URL, {
@@ -30,7 +30,7 @@ const server = app.listen(process.env.PORT, () =>
 );
 const io = socket(server, {
   cors: {
-    origin: "http://brochat.onrender.com/",
+    origin: "https://brochat.onrender.com/",
     credentials: true,
   },
 });
@@ -48,11 +48,14 @@ io.on("connection", (socket) => {
       socket.to(sendUserSocket).emit("msg-recieve", data.msg);
     }
   });
-  socket.on("callingVideo",(data) => {
-    io.to(data.userToCall).emit("calluser",{signal :data.signalData ,from:data.from})
-  })
+  socket.on("callingVideo", (data) => {
+    io.to(data.userToCall).emit("calluser", {
+      signal: data.signalData,
+      from: data.from,
+    });
+  });
 
-  socket.on("answer-call",(data)=>{
-    io.to(data.to).emit("call-accepted",data.signal)
-  })
+  socket.on("answer-call", (data) => {
+    io.to(data.to).emit("call-accepted", data.signal);
+  });
 });
