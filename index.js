@@ -30,7 +30,7 @@ const server = app.listen(process.env.PORT, () =>
 );
 const io = socket(server, {
   cors: {
-    origin: "https://brochat.onrender.com/",
+    origin: "https://brochat.onrender.com",
     credentials: true,
   },
 });
